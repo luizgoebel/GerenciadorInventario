@@ -1,6 +1,0 @@
-@GerenciadorInventario.ProdutoAPI_HostAddress = http://localhost:5284
-
-GET {{GerenciadorInventario.ProdutoAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
