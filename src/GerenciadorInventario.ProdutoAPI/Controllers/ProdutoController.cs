@@ -5,7 +5,7 @@ using GerenciadorInventario.ProdutoAPI.Service.Interface;
 namespace GerenciadorInventario.ProdutoAPI.Controllers;
 
 [ApiController]
-[Route("api/produtos")]
+[Route("api/produto")]
 public class ProdutoController : ControllerBase
 {
     private readonly IProdutoService _service;

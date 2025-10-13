@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GerenciadorInventario.ReciboAPI.Controllers;
 
 [ApiController]
-[Route("api/recibos")]
+[Route("api/recibo")]
 public class RecibosController : ControllerBase
 {
     private readonly IReciboService _service;

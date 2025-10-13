@@ -4,6 +4,7 @@ using GerenciadorInventario.ProdutoAPI.Context;
 using GerenciadorInventario.ProdutoAPI.Mapping;
 using GerenciadorInventario.ProdutoAPI.Repository;
 using GerenciadorInventario.ProdutoAPI.Repository.Interface;
+using GerenciadorInventario.ProdutoAPI.Seed;
 using GerenciadorInventario.ProdutoAPI.Service;
 using GerenciadorInventario.ProdutoAPI.Service.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<ProdutoDbContext>();
     ctx.Database.EnsureCreated();
+    await ctx.SeedAsync();
 }
 
 if (app.Environment.IsDevelopment())

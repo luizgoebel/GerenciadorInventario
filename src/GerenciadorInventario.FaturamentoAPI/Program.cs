@@ -3,6 +3,7 @@ using GerenciadorInventario.FaturamentoAPI.Clients.Interface;
 using GerenciadorInventario.FaturamentoAPI.Context;
 using GerenciadorInventario.FaturamentoAPI.Mapping;
 using GerenciadorInventario.FaturamentoAPI.Repository;
+using GerenciadorInventario.FaturamentoAPI.Seed;
 using GerenciadorInventario.FaturamentoAPI.Service;
 using GerenciadorInventario.FaturamentoAPI.Service.Interface;
 using GerenciadorInventario.Repository.Interface;
@@ -36,6 +37,7 @@ using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<FaturaDbContext>();
     ctx.Database.EnsureCreated();
+    await ctx.SeedAsync();
 }
 
 if (app.Environment.IsDevelopment())

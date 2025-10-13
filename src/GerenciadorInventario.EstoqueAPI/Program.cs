@@ -2,6 +2,7 @@ using GerenciadorInventario.EstoqueAPI.Context;
 using GerenciadorInventario.EstoqueAPI.Mapping;
 using GerenciadorInventario.EstoqueAPI.Repository;
 using GerenciadorInventario.EstoqueAPI.Repository.Interface;
+using GerenciadorInventario.EstoqueAPI.Seed;
 using GerenciadorInventario.EstoqueAPI.Service;
 using GerenciadorInventario.EstoqueAPI.Service.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<EstoqueDbContext>();
     ctx.Database.EnsureCreated();
+    await ctx.SeedAsync();
 }
 
 // Configure the HTTP request pipeline.

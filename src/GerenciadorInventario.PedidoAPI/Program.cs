@@ -4,6 +4,7 @@ using GerenciadorInventario.PedidoAPI.Context;
 using GerenciadorInventario.PedidoAPI.Mapping;
 using GerenciadorInventario.PedidoAPI.Repository;
 using GerenciadorInventario.PedidoAPI.Repository.Interface;
+using GerenciadorInventario.PedidoAPI.Seed;
 using GerenciadorInventario.PedidoAPI.Service;
 using GerenciadorInventario.PedidoAPI.Service.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<PedidoDbContext>();
     ctx.Database.EnsureCreated();
+    await ctx.SeedAsync();
 }
 
 if (app.Environment.IsDevelopment())

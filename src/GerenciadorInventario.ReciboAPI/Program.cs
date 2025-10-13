@@ -2,6 +2,7 @@ using GerenciadorInventario.ReciboAPI.Context;
 using GerenciadorInventario.ReciboAPI.Mapping;
 using GerenciadorInventario.ReciboAPI.Repository;
 using GerenciadorInventario.ReciboAPI.Repository.Interface;
+using GerenciadorInventario.ReciboAPI.Seed;
 using GerenciadorInventario.ReciboAPI.Service;
 using GerenciadorInventario.ReciboAPI.Service.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ using (var scope = app.Services.CreateScope())
 {
     var ctx = scope.ServiceProvider.GetRequiredService<ReciboDbContext>();
     ctx.Database.EnsureCreated();
+    await ctx.SeedAsync();
 }
 
 

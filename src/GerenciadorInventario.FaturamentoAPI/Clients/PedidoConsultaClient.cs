@@ -18,7 +18,7 @@ public class PedidoConsultaClient : IPedidoConsultaClient
     {
         try
         {
-            var resp = await _http.GetAsync($"api/pedidos/{pedidoId}");
+            var resp = await _http.GetAsync($"api/pedido/{pedidoId}");
             if (!resp.IsSuccessStatusCode) return null;
             return await resp.Content.ReadFromJsonAsync<PedidoResumo>();
         }

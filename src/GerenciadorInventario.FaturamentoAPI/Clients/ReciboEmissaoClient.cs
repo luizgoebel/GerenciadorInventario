@@ -17,7 +17,7 @@ public class ReciboEmissaoClient : IReciboEmissaoClient
     {
         try
         {
-            var resp = await _http.PostAsJsonAsync("api/recibos/emissao", new { faturaId, numeroFatura, valorTotal });
+            var resp = await _http.PostAsJsonAsync("api/recibo/emissao", new { faturaId, numeroFatura, valorTotal });
             return resp.IsSuccessStatusCode;
         }
         catch (Exception ex)

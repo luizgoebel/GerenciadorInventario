@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GerenciadorInventario.PedidoAPI.Controllers;
 
 [ApiController]
-[Route("api/pedidos")]
+[Route("api/pedido")]
 public class PedidoController : ControllerBase
 {
     private readonly IPedidoService _service;

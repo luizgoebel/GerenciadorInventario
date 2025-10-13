@@ -10,6 +10,14 @@ public class Produto : BaseModel<Produto>
     public decimal Preco { get; set; }
     public string? Descricao { get; set; }
 
+    public Produto() { }
+    public Produto(string nome, decimal preco, string descricao)
+    {
+        this.Nome = nome;
+        this.Preco = preco;
+        this.Descricao = descricao;
+    }
+
     public void Validar()
     {
         if (string.IsNullOrWhiteSpace(this.Nome)) throw new DomainException("Por favor, inserir o nome do produto.");
