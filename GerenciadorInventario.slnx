@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Gateway.API/">
+    <Project Path="src/Gateway.API/Gateway.API.csproj" Id="db68a022-abdc-4565-b226-fd28b65a636b" />
+  </Folder>
   <Folder Name="/Services/">
     <Project Path="src/GerenciadorInventario.EstoqueAPI/GerenciadorInventario.EstoqueAPI.csproj" Id="997ccce6-8bea-4f80-9650-6a8045d7a0f2" />
     <Project Path="src/GerenciadorInventario.FaturamentoAPI/GerenciadorInventario.FaturamentoAPI.csproj" Id="c68485b2-c5d6-4c1e-96dd-e2bf800dd169" />
