@@ -1,23 +1,49 @@
+using GerenciadorInventario.FaturamentoAPI.Clients;
+using GerenciadorInventario.FaturamentoAPI.Clients.Interface;
+using GerenciadorInventario.FaturamentoAPI.Context;
+using GerenciadorInventario.FaturamentoAPI.Mapping;
+using GerenciadorInventario.FaturamentoAPI.Repository;
+using GerenciadorInventario.FaturamentoAPI.Service;
+using GerenciadorInventario.FaturamentoAPI.Service.Interface;
+using GerenciadorInventario.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(typeof(FaturamentoProfile).Assembly);
+
+builder.Services.AddDbContext<FaturaDbContext>(o => o.UseInMemoryDatabase("FaturaDb"));
+
+builder.Services.AddScoped<IFaturamentoService, FaturamentoService>();
+builder.Services.AddScoped<IFaturaRepository, FaturaRepository>();
+
+builder.Services.AddHttpClient<IPedidoConsultaClient, PedidoConsultaClient>(c =>
+{
+    var url = builder.Configuration["ServiceUrls:PedidoAPI"]; if (!string.IsNullOrWhiteSpace(url)) c.BaseAddress = new Uri(url);
+});
+builder.Services.AddHttpClient<IReciboEmissaoClient, ReciboEmissaoClient>(c =>
+{
+    var url = builder.Configuration["ServiceUrls:ReciboAPI"]; if (!string.IsNullOrWhiteSpace(url)) c.BaseAddress = new Uri(url);
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var ctx = scope.ServiceProvider.GetRequiredService<FaturaDbContext>();
+    ctx.Database.EnsureCreated();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
-
+app.UseHttpsRedirection();
 app.MapControllers();
-
 app.Run();

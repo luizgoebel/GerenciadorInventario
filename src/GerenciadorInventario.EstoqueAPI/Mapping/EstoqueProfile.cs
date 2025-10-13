@@ -10,5 +10,4 @@ public class EstoqueProfile : Profile
     {
         CreateMap<Estoque, EstoqueDto>();
     }
-{
 }
