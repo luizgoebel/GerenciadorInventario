@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Services/">
+    <Project Path="src/GerenciadorInventario.EstoqueAPI/GerenciadorInventario.EstoqueAPI.csproj" Id="997ccce6-8bea-4f80-9650-6a8045d7a0f2" />
+    <Project Path="src/GerenciadorInventario.FaturamentoAPI/GerenciadorInventario.FaturamentoAPI.csproj" Id="c68485b2-c5d6-4c1e-96dd-e2bf800dd169" />
+    <Project Path="src/GerenciadorInventario.PedidoAPI/GerenciadorInventario.PedidoAPI.csproj" Id="6c27c889-9e6b-4dd3-b527-d4711f9cb2f5" />
+    <Project Path="src/GerenciadorInventario.ProdutoAPI/GerenciadorInventario.ProdutoAPI.csproj" Id="07394e45-a3c8-4029-8733-4ba60bfeb671" />
+    <Project Path="src/GerenciadorInventario.ReciboAPI/GerenciadorInventario.ReciboAPI.csproj" Id="e6f64e68-88cf-4d7a-973b-5f98b81cc418" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="src/Shared.Api/Shared.Api.csproj" Id="d8cc3dd2-024d-494d-a2b4-0006dae8df3d" />
+  </Folder>
+  <Folder Name="/Tests/" />
+</Solution>
