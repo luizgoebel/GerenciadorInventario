@@ -15,7 +15,7 @@ public class EstoqueClient : IEstoqueClient
         var estoqueInicial = new { ProdutoId = produtoId, Quantidade = 0 };
         try
         {
-            var response = await this._httpClient.PostAsJsonAsync("api/estoques/entrada", estoqueInicial);
+            var response = await this._httpClient.PostAsJsonAsync("api/estoque/entrada", estoqueInicial);
             response.EnsureSuccessStatusCode();
         }
         catch
