@@ -3,7 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(opt =>
 {
     opt.ListenAnyIP(5149);              // HTTP
-    opt.ListenAnyIP(7082, o => o.UseHttps()); // HTTPS
+    //opt.ListenAnyIP(7082, o => o.UseHttps()); // HTTPS
 });
 
 builder.Services.AddReverseProxy()
