@@ -1,7 +1,6 @@
 using GerenciadorInventario.ReciboAPI.Dto;
 using GerenciadorInventario.ReciboAPI.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Exceptions;
 
 namespace GerenciadorInventario.ReciboAPI.Controllers;
 
@@ -19,24 +18,13 @@ public class RecibosController : ControllerBase
     [HttpPost("emissao")]
     public async Task<IActionResult> Emitir([FromBody] EmissaoReciboDto emissaoReciboDto)
     {
-        try
-        {
-            ReciboDto reciboDto =
-                await _service.GerarPorFaturaAsync(
-                    emissaoReciboDto.FaturaId,
-                    emissaoReciboDto.NumeroFatura,
-                    emissaoReciboDto.ValorTotal);
+        ReciboDto reciboDto =
+            await _service.GerarPorFaturaAsync(
+                emissaoReciboDto.FaturaId,
+                emissaoReciboDto.NumeroFatura,
+                emissaoReciboDto.ValorTotal);
 
-            return Ok(reciboDto);
-        }
-        catch (ServiceException ex)
-        {
-            return BadRequest(new { erro = ex.Message });
-        }
-        catch (Exception ex)
-        {
-             throw new(message: ex.Message);
-        }
+        return Ok(reciboDto);
     }
 
     [HttpGet("fatura/{faturaId:int}")]

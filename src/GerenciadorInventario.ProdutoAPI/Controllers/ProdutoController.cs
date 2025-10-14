@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using GerenciadorInventario.ProdutoAPI.Dto;
 using GerenciadorInventario.ProdutoAPI.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorInventario.ProdutoAPI.Controllers;
 
@@ -18,15 +18,8 @@ public class ProdutoController : ControllerBase
     [HttpPost("criar")]
     public async Task<IActionResult> Post([FromBody] ProdutoCriacaoDto dto)
     {
-        try
-        {
-            var produto = await _service.CriarProdutoAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
+        var produto = await _service.CriarProdutoAsync(dto);
+        return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
     }
 
     [HttpGet("{id:int}")]
@@ -47,16 +40,9 @@ public class ProdutoController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Put(int id, [FromBody] ProdutoAtualizacaoDto dto)
     {
-        try
-        {
-            var atualizado = await _service.AtualizarAsync(id, dto);
-            if (atualizado == null) return NotFound();
-            return Ok(atualizado);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
+        var atualizado = await _service.AtualizarAsync(id, dto);
+        if (atualizado == null) return NotFound();
+        return Ok(atualizado);
     }
 
     [HttpDelete("{id:int}")]

@@ -8,6 +8,7 @@ using GerenciadorInventario.FaturamentoAPI.Service;
 using GerenciadorInventario.FaturamentoAPI.Service.Interface;
 using GerenciadorInventario.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using Shared.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

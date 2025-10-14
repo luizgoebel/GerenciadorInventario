@@ -1,6 +1,5 @@
 ﻿using GerenciadorInventario.FaturamentoAPI.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Exceptions;
 
 namespace GerenciadorInventario.FaturamentoAPI.Controllers;
 
@@ -14,15 +13,8 @@ public class FaturamentoController : ControllerBase
     [HttpPost("{pedidoId:int}")]
     public async Task<IActionResult> Faturar(int pedidoId)
     {
-        try
-        {
-            var result = await _service.FaturarPedidoAsync(pedidoId);
-            return CreatedAtAction(nameof(GetPorPedido), new { pedidoId }, result);
-        }
-        catch (ServiceException ex)
-        {
-            return BadRequest(new { erro = ex.Message });
-        }
+        var result = await _service.FaturarPedidoAsync(pedidoId);
+        return CreatedAtAction(nameof(GetPorPedido), new { pedidoId }, result);
     }
 
     [HttpGet("pedido/{pedidoId:int}")]

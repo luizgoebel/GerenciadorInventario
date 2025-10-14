@@ -6,6 +6,7 @@ using GerenciadorInventario.ReciboAPI.Seed;
 using GerenciadorInventario.ReciboAPI.Service;
 using GerenciadorInventario.ReciboAPI.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using Shared.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

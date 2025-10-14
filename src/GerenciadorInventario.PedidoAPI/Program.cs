@@ -8,6 +8,7 @@ using GerenciadorInventario.PedidoAPI.Seed;
 using GerenciadorInventario.PedidoAPI.Service;
 using GerenciadorInventario.PedidoAPI.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using Shared.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

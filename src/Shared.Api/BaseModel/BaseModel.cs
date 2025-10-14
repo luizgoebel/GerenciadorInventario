@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Api.BaseModel;
+﻿namespace Shared.Api.BaseModel;
 
 public abstract class BaseModel<T> where T : BaseModel<T>
 {
