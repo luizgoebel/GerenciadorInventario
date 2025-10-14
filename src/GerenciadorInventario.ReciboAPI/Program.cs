@@ -13,9 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ReciboDbContext>(o => o.UseInMemoryDatabase("ReciboDb"));
-
 builder.Services.AddAutoMapper(typeof(ReciboProfile).Assembly);
+
+builder.Services.AddDbContext<ReciboDbContext>(o => o.UseInMemoryDatabase("ReciboDb"));
 
 builder.Services.AddScoped<IReciboService, ReciboService>();
 builder.Services.AddScoped<IReciboRepository, ReciboRepository>();

@@ -4,7 +4,7 @@
     "ApiGateway": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "applicationUrl": "https://localhost:7082;http://localhost:5149",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
