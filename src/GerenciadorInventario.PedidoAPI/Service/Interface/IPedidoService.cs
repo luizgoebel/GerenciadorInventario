@@ -8,4 +8,5 @@ public interface IPedidoService
     Task<PedidoDto?> GetByIdAsync(int id);
     Task<IEnumerable<PedidoDto>> GetTodosAsync();
     Task<bool> CancelarAsync(int id);
+    Task<bool> ConfirmarAsync(int id);
 }

@@ -36,6 +36,13 @@ public class PedidoController : ControllerBase
         return Ok(itens);
     }
 
+    [HttpPost("{id:int}/confirmar")]
+    public async Task<IActionResult> Confirmar(int id)
+    {
+        bool pedidoOk = await this._service.ConfirmarAsync(id);
+        return Ok(pedidoOk);
+    }
+
     [HttpPut("{id:int}/cancelar")]
     public async Task<IActionResult> Cancelar(int id)
     {

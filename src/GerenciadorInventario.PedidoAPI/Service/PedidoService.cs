@@ -47,6 +47,24 @@ public class PedidoService : IPedidoService
         return this._mapper.Map<PedidoDto>(pedido);
     }
 
+    public async Task<bool> ConfirmarAsync(int id)
+    {
+        Pedido? pedido = await _repo.GetByIdWithItemsAsync(id) ??
+                        throw new ServiceException("Pedido não encontrado.");
+
+        try
+        {
+            pedido.Confirmar();
+        }
+        catch (Exception ex)
+        {
+            throw new ServiceException(ex.Message);
+        }
+
+        await _repo.UpdateAsync(pedido);
+        return true;
+    }
+
     public async Task<PedidoDto?> GetByIdAsync(int id)
     {
         Pedido? pedido = await _repo.GetByIdWithItemsAsync(id) ??
