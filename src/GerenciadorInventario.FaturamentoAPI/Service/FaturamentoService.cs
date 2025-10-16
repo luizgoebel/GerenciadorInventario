@@ -11,8 +11,8 @@ namespace GerenciadorInventario.FaturamentoAPI.Service;
 public class FaturamentoService : IFaturamentoService
 {
     private readonly IFaturaRepository _repo;
-    private readonly IPedidoConsultaClient _pedidoClient;
-    private readonly IReciboEmissaoClient _reciboClient;
+    private readonly IPedidoConsultaClient _pedidoConsultaClient;
+    private readonly IReciboEmissaoClient _reciboEmissaoClient;
     private readonly IMapper _mapper;
 
     public FaturamentoService(
@@ -22,8 +22,8 @@ public class FaturamentoService : IFaturamentoService
         IMapper mapper)
     {
         this._repo = repo;
-        this._pedidoClient = pedidoClient;
-        this._reciboClient = reciboClient;
+        this._pedidoConsultaClient = pedidoClient;
+        this._reciboEmissaoClient = reciboClient;
         this._mapper = mapper;
     }
 
@@ -31,8 +31,13 @@ public class FaturamentoService : IFaturamentoService
     {
         Fatura? pedidoJaFaturado = await this._repo.GetByPedidoIdAsync(pedidoId);
         if (pedidoJaFaturado != null) throw new ServiceException("Pedido já faturado.");
-        PedidoResumo pedidoResumo = await this._pedidoClient.ObterPedidoAsync(pedidoId) ??
+
+
+        //Se eu não encontrar o pedido, lanço uma exceção e não continuo o processamento
+        PedidoResumo pedidoResumo = await this._pedidoConsultaClient.ObterPedidoAsync(pedidoId) ??
             throw new ServiceException("Pedido não encontrado.");
+
+
         if (!string.Equals(pedidoResumo.Status, "Confirmado", StringComparison.OrdinalIgnoreCase))
             throw new ServiceException("Pedido não confirmado.");
         string numero = GerarNumeroFatura(pedidoId);
@@ -43,7 +48,10 @@ public class FaturamentoService : IFaturamentoService
 
         fatura.Validar();
         await _repo.AddAsync(fatura);
-        _ = this._reciboClient.EmitirReciboAsync(fatura.Id, fatura.Numero, fatura.Total);
+
+
+        //Disparo a emissão do recibo de forma assíncrona, sem aguardar o resultado, pode falhar sem impactar o faturamento
+        _ = this._reciboEmissaoClient.EmitirReciboAsync(fatura.Id, fatura.Numero, fatura.Total);
 
         return this._mapper.Map<FaturaCriacaoResultadoDto>(fatura);
     }
