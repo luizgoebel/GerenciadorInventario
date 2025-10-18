@@ -11,4 +11,5 @@ public class PedidoListVm
 public class PedidoEditVm
 {
     public PedidoCriacaoDto Novo { get; set; } = new();
+    public List<ProdutoDto> Produtos { get; set; } = new();
 }

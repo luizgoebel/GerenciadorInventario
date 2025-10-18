@@ -41,7 +41,8 @@ public class PedidoController : Controller
     [HttpGet]
     public async Task<IActionResult> Criar()
     {
-        return PartialView("_Editar", new PedidoEditVm());
+        var produtos = await _produtoClient.GetTodosAsync();
+        return PartialView("_Editar", new PedidoEditVm { Produtos = produtos.ToList() });
     }
 
     [HttpPost]
