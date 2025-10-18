@@ -1,10 +1,19 @@
 @model GerenciadorInventario.WEB.ViewModels.PedidoListVm
+@using System.Linq
+@{
+    string ItensNomes(IEnumerable<GerenciadorInventario.WEB.Dtos.PedidoItemDto> itens)
+    {
+        var nomes = itens.Select(i => string.IsNullOrWhiteSpace(i.ProdutoNome) ? $"Produto {i.ProdutoId}" : i.ProdutoNome);
+        return string.Join(", ", nomes);
+    }
+}
 <table class="table table-hover align-middle">
     <thead>
         <tr>
             <th>#</th>
             <th>Data</th>
             <th>Status</th>
+            <th>Produtos</th>
             <th class="text-end">Total</th>
             <th class="text-end">Ações</th>
         </tr>
@@ -13,7 +22,7 @@
         @if (!Model.Dados.Items.Any())
         {
             <tr>
-                <td colspan="5" class="text-center text-muted py-4">Nenhum pedido encontrado.</td>
+                <td colspan="6" class="text-center text-muted py-4">Nenhum pedido encontrado.</td>
             </tr>
         }
         else
@@ -26,16 +35,17 @@
                     <td>
                         <span class="badge bg-@(p.Status?.ToLower().Contains("cancel") == true ? "danger" : p.Status?.ToLower().Contains("confirm") == true ? "success" : "secondary")">@p.Status</span>
                     </td>
+                    <td class="text-truncate" style="max-width: 380px;" title="@ItensNomes(p.Itens)">@ItensNomes(p.Itens)</td>
                     <td class="text-end">@p.Total.ToString("C2")</td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-secondary" data-action="view" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Visualizar pedido"><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn btn-outline-success" data-action="confirm" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Confirmar pedido"><i class="fa-solid fa-check"></i></button>
-                            <button class="btn btn-outline-warning" data-action="cancel" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Cancelar pedido"><i class="fa-solid fa-ban"></i></button>
-                            <button class="btn btn-outline-primary" data-action="invoice" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Faturar pedido"><i class="fa-solid fa-file-invoice-dollar"></i></button>
-                            <button class="btn btn-outline-info" data-action="invoice-view" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Visualizar fatura"><i class="fa-solid fa-file-lines"></i></button>
-                            <button class="btn btn-outline-dark" data-action="receipt" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Emitir recibo"><i class="fa-solid fa-receipt"></i></button>
-                            <button class="btn btn-outline-secondary" data-action="receipt-view" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Visualizar recibo"><i class="fa-solid fa-list"></i></button>
+                            <button class="btn btn-outline-secondary" data-action="view" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Visualizar pedido" data-bs-placement="bottom"><i class="fa-solid fa-eye"></i></button>
+                            <button class="btn btn-outline-success" data-action="confirm" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Confirmar pedido" data-bs-placement="bottom"><i class="fa-solid fa-check"></i></button>
+                            <button class="btn btn-outline-warning" data-action="cancel" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Cancelar pedido" data-bs-placement="bottom"><i class="fa-solid fa-ban"></i></button>
+                            <button class="btn btn-outline-primary" data-action="invoice" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Faturar pedido" data-bs-placement="bottom"><i class="fa-solid fa-file-invoice-dollar"></i></button>
+                            <button class="btn btn-outline-info" data-action="invoice-view" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Visualizar fatura" data-bs-placement="bottom"><i class="fa-solid fa-file-lines"></i></button>
+                            <button class="btn btn-outline-dark" data-action="receipt" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Emitir recibo" data-bs-placement="bottom"><i class="fa-solid fa-receipt"></i></button>
+                            <button class="btn btn-outline-secondary" data-action="receipt-view" data-id="@p.Id" data-bs-toggle="tooltip" data-bs-title="Visualizar recibo" data-bs-placement="bottom"><i class="fa-solid fa-list"></i></button>
                         </div>
                     </td>
                 </tr>

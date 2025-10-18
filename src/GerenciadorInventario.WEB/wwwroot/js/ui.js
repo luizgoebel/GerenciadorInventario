@@ -6,7 +6,7 @@ window.Ui = (function () {
   function initTooltips(root=document){
     const els = root.querySelectorAll?.('[data-bs-toggle="tooltip"]');
     els?.forEach(el => {
-      try { new bootstrap.Tooltip(el); } catch {}
+      try { new bootstrap.Tooltip(el, { container: 'body', boundary: 'window', placement: el.getAttribute('data-bs-placement') || 'top' }); } catch {}
     });
   }
 
@@ -38,7 +38,6 @@ window.Ui = (function () {
     modalHost.appendChild(modalEl);
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
-    // init tooltips within modal
     modalEl.addEventListener('shown.bs.modal', ()=> initTooltips(modalEl));
     return modalEl;
   }
