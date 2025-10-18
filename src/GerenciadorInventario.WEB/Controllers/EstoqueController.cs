@@ -20,12 +20,12 @@ public class EstoqueController : Controller
     [HttpGet]
     public async Task<IActionResult> Tabela(int? produtoId, int page = 1, int pageSize = 10)
     {
-        var produtos = await _produtoClient.GetTodosAsync();
-        var itens = new List<EstoqueDto>();
+        var produtos = (await _produtoClient.GetTodosAsync()).ToList();
+        var itens = new List<EstoqueListItemVm>();
         foreach (var p in produtos)
         {
             var e = await _client.GetPorProdutoAsync(p.Id);
-            if (e != null) itens.Add(e);
+            if (e != null) itens.Add(new EstoqueListItemVm { ProdutoId = p.Id, ProdutoNome = p.Nome, Quantidade = e.Quantidade });
         }
         if (produtoId.HasValue)
             itens = itens.Where(x => x.ProdutoId == produtoId.Value).ToList();
@@ -34,26 +34,36 @@ public class EstoqueController : Controller
         var vm = new EstoqueVm
         {
             ProdutoIdFiltro = produtoId,
-            Dados = new PagedResult<EstoqueDto> { Items = pageItems, Page = page, PageSize = pageSize, TotalItems = total }
+            Dados = new PagedResult<EstoqueListItemVm> { Items = pageItems, Page = page, PageSize = pageSize, TotalItems = total }
         };
         return PartialView("_Tabela", vm);
     }
 
     [HttpGet]
-    public IActionResult MovimentoEntrada(int produtoId) => PartialView("_Movimento", new MovimentoEstoqueVm
+    public async Task<IActionResult> MovimentoEntrada(int? produtoId)
     {
-        Movimento = new MovimentoEstoqueDto { ProdutoId = produtoId }
-    });
+        var produtos = (await _produtoClient.GetTodosAsync()).ToList();
+        return PartialView("_Movimento", new MovimentoEstoqueVm
+        {
+            Movimento = new MovimentoEstoqueDto { ProdutoId = produtoId ?? 0 },
+            Produtos = produtos.ToList()
+        });
+    }
 
     [HttpPost]
     public async Task<IActionResult> MovimentoEntrada([FromBody] MovimentoEstoqueDto dto)
         => (await _client.EntradaAsync(dto)) ? Ok() : BadRequest();
 
     [HttpGet]
-    public IActionResult MovimentoSaida(int produtoId) => PartialView("_Movimento", new MovimentoEstoqueVm
+    public async Task<IActionResult> MovimentoSaida(int? produtoId)
     {
-        Movimento = new MovimentoEstoqueDto { ProdutoId = produtoId }
-    });
+        var produtos = (await _produtoClient.GetTodosAsync()).ToList();
+        return PartialView("_Movimento", new MovimentoEstoqueVm
+        {
+            Movimento = new MovimentoEstoqueDto { ProdutoId = produtoId ?? 0 },
+            Produtos = produtos.ToList()
+        });
+    }
 
     [HttpPost]
     public async Task<IActionResult> MovimentoSaida([FromBody] MovimentoEstoqueDto dto)
@@ -62,8 +72,9 @@ public class EstoqueController : Controller
     [HttpGet]
     public async Task<IActionResult> Visualizar(int produtoId)
     {
+        var prod = await _produtoClient.GetByIdAsync(produtoId);
         var dto = await _client.GetPorProdutoAsync(produtoId);
-        if (dto == null) return NotFound();
-        return PartialView("_Visualizar", dto);
+        if (dto == null || prod == null) return NotFound();
+        return PartialView("_Visualizar", new EstoqueDetalheVm { ProdutoId = produtoId, ProdutoNome = prod.Nome, Quantidade = dto.Quantidade });
     }
 }

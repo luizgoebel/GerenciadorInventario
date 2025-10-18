@@ -20,4 +20,10 @@ public class ReciboApiClient : IReciboApiClient
 
     public async Task<ReciboDto?> GetPorIdAsync(int id, CancellationToken ct = default)
         => await _http.GetFromJsonAsync<ReciboDto>($"api/recibo/{id}", ct);
+
+    public async Task<bool> EmitirAsync(int faturaId, string numeroFatura, decimal valorTotal, CancellationToken ct = default)
+    {
+        var resp = await _http.PostAsJsonAsync("api/recibo/emissao", new { faturaId, numeroFatura, valorTotal }, ct);
+        return resp.IsSuccessStatusCode;
+    }
 }

@@ -2,8 +2,15 @@
 <div class="container-fluid">
     <form id="movForm">
         <div class="mb-3">
-            <label class="form-label">Produto Id</label>
-            <input name="ProdutoId" type="number" class="form-control" value="@Model.Movimento.ProdutoId" />
+            <label class="form-label">Produto</label>
+            <select name="ProdutoId" class="form-select">
+                <option value="">Selecione...</option>
+                @foreach (var p in Model.Produtos)
+                {
+                    var selected = p.Id == Model.Movimento.ProdutoId ? "selected" : "";
+                    <option value="@p.Id" selected>@p.Nome</option>
+                }
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Quantidade</label>

@@ -9,10 +9,15 @@ public class PedidoController : Controller
 {
     private readonly IPedidoApiClient _client;
     private readonly IProdutoApiClient _produtoClient;
-    public PedidoController(IPedidoApiClient client, IProdutoApiClient produtoClient)
+    private readonly IFaturamentoApiClient _fatClient;
+    private readonly IReciboApiClient _reciboClient;
+
+    public PedidoController(IPedidoApiClient client, IProdutoApiClient produtoClient, IFaturamentoApiClient fatClient, IReciboApiClient reciboClient)
     {
         _client = client;
         _produtoClient = produtoClient;
+        _fatClient = fatClient;
+        _reciboClient = reciboClient;
     }
 
     public IActionResult Index() => View(new PedidoListVm());
@@ -61,4 +66,40 @@ public class PedidoController : Controller
     [HttpPost]
     public async Task<IActionResult> Cancelar(int id)
         => (await _client.CancelarAsync(id)) ? Ok() : BadRequest();
+
+    // Faturamento integrado no Pedido
+    [HttpPost]
+    public async Task<IActionResult> Faturar(int pedidoId)
+    {
+        var res = await _fatClient.FaturarAsync(pedidoId);
+        return Ok(res);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> VisualizarFatura(int pedidoId)
+    {
+        var dto = await _fatClient.GetPorPedidoAsync(pedidoId);
+        if (dto == null) return NotFound();
+        return PartialView("_FaturaVisualizar", dto);
+    }
+
+    // Recibo integrado no Pedido
+    [HttpPost]
+    public async Task<IActionResult> EmitirRecibo(int pedidoId)
+    {
+        var fatura = await _fatClient.GetPorPedidoAsync(pedidoId);
+        if (fatura == null) return NotFound();
+        var ok = await _reciboClient.EmitirAsync(fatura.Id, fatura.Numero, fatura.Total);
+        return ok ? Ok() : BadRequest();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> VisualizarRecibo(int pedidoId)
+    {
+        var fatura = await _fatClient.GetPorPedidoAsync(pedidoId);
+        if (fatura == null) return NotFound();
+        var recibo = await _reciboClient.GetPorFaturaAsync(fatura.Id);
+        if (recibo == null) return NotFound();
+        return PartialView("_ReciboVisualizar", recibo);
+    }
 }
