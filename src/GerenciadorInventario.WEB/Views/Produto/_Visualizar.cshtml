@@ -1,0 +1,16 @@
+@model GerenciadorInventario.WEB.Dtos.ProdutoDto
+<div class="container-fluid">
+    <dl class="row">
+        <dt class="col-sm-3">Id</dt>
+        <dd class="col-sm-9">@Model.Id</dd>
+        <dt class="col-sm-3">Nome</dt>
+        <dd class="col-sm-9">@Model.Nome</dd>
+        <dt class="col-sm-3">Preço</dt>
+        <dd class="col-sm-9">@Model.Preco.ToString("C2")</dd>
+        <dt class="col-sm-3">Descrição</dt>
+        <dd class="col-sm-9">@Model.Descricao</dd>
+    </dl>
+</div>
+<div class="d-flex justify-content-end">
+    <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+</div>

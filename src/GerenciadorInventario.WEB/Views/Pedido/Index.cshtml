@@ -1,0 +1,27 @@
+@model GerenciadorInventario.WEB.ViewModels.PedidoListVm
+@{
+    ViewData["Title"] = "Pedidos";
+}
+<div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <button id="btnAddPedido" class="btn btn-primary">
+                <i class="fa fa-plus me-1"></i> Adicionar
+            </button>
+        </div>
+        <div class="input-group" style="max-width: 380px;">
+            <input id="txtFiltroPedido" type="text" class="form-control" placeholder="Filtrar por status..." />
+            <button id="btnFiltrarPedido" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
+
+    <div id="pedidoTableContainer"></div>
+</div>
+
+@section Scripts {
+    <script src="~/js/ui.js" asp-append-version="true"></script>
+    <script src="~/js/domain/pedido.js" asp-append-version="true"></script>
+    <script>
+        window.PedidoPage.init();
+    </script>
+}

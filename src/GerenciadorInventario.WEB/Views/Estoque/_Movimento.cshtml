@@ -1,0 +1,33 @@
+@model GerenciadorInventario.WEB.ViewModels.MovimentoEstoqueVm
+<div class="container-fluid">
+    <form id="movForm">
+        <div class="mb-3">
+            <label class="form-label">Produto Id</label>
+            <input name="ProdutoId" type="number" class="form-control" value="@Model.Movimento.ProdutoId" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Quantidade</label>
+            <input name="Quantidade" type="number" class="form-control" value="@Model.Movimento.Quantidade" />
+        </div>
+    </form>
+</div>
+<div class="d-flex justify-content-end gap-2 mt-3">
+    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button id="btnSalvarMov" class="btn btn-primary">Salvar</button>
+</div>
+<script>
+    (function(){
+        document.getElementById('btnSalvarMov').addEventListener('click', async function(){
+            const form = document.getElementById('movForm');
+            const data = Object.fromEntries(new FormData(form).entries());
+            data.ProdutoId = parseInt(data.ProdutoId);
+            data.Quantidade = parseInt(data.Quantidade);
+            const action = window.__movAction === 'entrada' ? '/Estoque/MovimentoEntrada' : '/Estoque/MovimentoSaida';
+            const res = await Ui.postJson(action, data);
+            if(res !== null){
+                document.querySelector('#modalHost .modal.show .btn-close')?.click();
+                window.EstoquePage.reloadTable();
+            }
+        });
+    })();
+</script>

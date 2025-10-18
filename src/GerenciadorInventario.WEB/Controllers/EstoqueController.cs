@@ -58,4 +58,12 @@ public class EstoqueController : Controller
     [HttpPost]
     public async Task<IActionResult> MovimentoSaida([FromBody] MovimentoEstoqueDto dto)
         => (await _client.SaidaAsync(dto)) ? Ok() : BadRequest();
+
+    [HttpGet]
+    public async Task<IActionResult> Visualizar(int produtoId)
+    {
+        var dto = await _client.GetPorProdutoAsync(produtoId);
+        if (dto == null) return NotFound();
+        return PartialView("_Visualizar", dto);
+    }
 }

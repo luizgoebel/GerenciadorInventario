@@ -1,4 +1,5 @@
 using GerenciadorInventario.WEB.Models;
+using GerenciadorInventario.WEB.Models.Home;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,7 +16,7 @@ namespace GerenciadorInventario.WEB.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new IndexModel { Title = "Início" });
         }
 
         public IActionResult Privacy()

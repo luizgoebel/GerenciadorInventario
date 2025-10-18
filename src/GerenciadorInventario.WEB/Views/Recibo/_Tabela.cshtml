@@ -1,0 +1,53 @@
+@model GerenciadorInventario.WEB.ViewModels.ReciboVm
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Número</th>
+            <th>Fatura</th>
+            <th>Data</th>
+            <th class="text-end">Total</th>
+            <th class="text-end">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Dados.Items.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">Nenhum recibo encontrado.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var r in Model.Dados.Items)
+            {
+                <tr>
+                    <td>@r.Id</td>
+                    <td>@r.Numero</td>
+                    <td>@r.FaturaId</td>
+                    <td>@r.DataEmissao.ToString("g")</td>
+                    <td class="text-end">@r.ValorTotal.ToString("C2")</td>
+                    <td class="text-end">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-secondary" data-action="view" data-id="@r.Id"><i class="fa fa-eye"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<nav aria-label="Paginação">
+    <ul class="pagination justify-content-end">
+        <li class="page-item @(Model.Dados.Page == 1 ? "disabled" : "")">
+            <a class="page-link" href="#" data-page="@(Model.Dados.Page - 1)">Anterior</a>
+        </li>
+        @for (var i = 1; i <= Math.Max(1, Model.Dados.TotalPages); i++)
+        {
+            <li class="page-item @(Model.Dados.Page == i ? "active" : "")"><a class="page-link" href="#" data-page="@i">@i</a></li>
+        }
+        <li class="page-item @(Model.Dados.Page == Model.Dados.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="#" data-page="@(Model.Dados.Page + 1)">Próximo</a>
+        </li>
+    </ul>
+</nav>

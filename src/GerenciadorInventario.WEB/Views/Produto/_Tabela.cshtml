@@ -1,0 +1,54 @@
+@model GerenciadorInventario.WEB.ViewModels.ProdutoListVm
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th class="text-end">Preço</th>
+            <th>Descrição</th>
+            <th class="text-end">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Dados.Items.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">Nenhum produto encontrado.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var p in Model.Dados.Items)
+            {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.Nome</td>
+                    <td class="text-end">@p.Preco.ToString("C2")</td>
+                    <td>@p.Descricao</td>
+                    <td class="text-end">
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-secondary" data-action="view" data-id="@p.Id"><i class="fa fa-eye"></i></button>
+                            <button class="btn btn-outline-primary" data-action="edit" data-id="@p.Id"><i class="fa fa-pen"></i></button>
+                            <button class="btn btn-outline-danger" data-action="delete" data-id="@p.Id"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Paginação">
+    <ul class="pagination justify-content-end">
+        <li class="page-item @(Model.Dados.Page == 1 ? "disabled" : "")">
+            <a class="page-link" href="#" data-page="@(Model.Dados.Page - 1)">Anterior</a>
+        </li>
+        @for (var i = 1; i <= Math.Max(1, Model.Dados.TotalPages); i++)
+        {
+            <li class="page-item @(Model.Dados.Page == i ? "active" : "")"><a class="page-link" href="#" data-page="@i">@i</a></li>
+        }
+        <li class="page-item @(Model.Dados.Page == Model.Dados.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="#" data-page="@(Model.Dados.Page + 1)">Próximo</a>
+        </li>
+    </ul>
+</nav>
