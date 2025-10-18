@@ -81,9 +81,15 @@ window.Ui = (function () {
     try{
       const scripts = root.querySelectorAll('script');
       scripts.forEach(old => {
+        const type = (old.getAttribute('type')||'').toLowerCase();
+        // Skip non-JS scripts (e.g., application/json with data for the modal)
+        if (type && type !== 'text/javascript' && type !== 'module') {
+          return; // keep it in place
+        }
         const s = document.createElement('script');
         if (old.src) { s.src = old.src; }
-        if (old.type) { s.type = old.type; }
+        if (type) { s.type = type; }
+        if (old.id) { s.id = old.id; }
         s.text = old.textContent || '';
         document.body.appendChild(s);
         old.parentNode?.removeChild(old);
@@ -102,7 +108,7 @@ window.Ui = (function () {
     const modalEl = buildModal(id, title, html);
     modalHost.innerHTML = '';
     modalHost.appendChild(modalEl);
-    // Execute any inline scripts included in the loaded partial
+    // Execute any inline/external scripts included in the loaded partial
     executeInlineScripts(modalEl);
     const modal = new bootstrap.Modal(modalEl);
     modal.show();

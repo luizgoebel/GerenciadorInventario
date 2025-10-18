@@ -5,7 +5,10 @@
   const totalEl = root.querySelector('#totalGeral');
   const produtosJson = document.getElementById('pedidoProdutosData')?.textContent || '[]';
   let produtos = [];
-  try{ produtos = JSON.parse(produtosJson); }catch{ produtos = []; }
+  try{
+    const raw = JSON.parse(produtosJson);
+    produtos = (Array.isArray(raw)? raw : []).map(p => ({ id: p.id ?? p.Id, nome: p.nome ?? p.Nome, preco: p.preco ?? p.Preco })).filter(p => !!p.id);
+  }catch{ produtos = []; }
 
   function fmt(v){ return (v||0).toLocaleString('pt-BR', { style:'currency', currency:'BRL' }); }
 
