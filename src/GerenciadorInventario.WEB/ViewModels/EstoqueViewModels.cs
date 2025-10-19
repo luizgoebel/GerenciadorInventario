@@ -19,6 +19,7 @@ public class MovimentoEstoqueVm
 {
     public MovimentoEstoqueDto Movimento { get; set; } = new();
     public List<ProdutoDto> Produtos { get; set; } = new();
+    public bool LockProduct { get; set; } = false;
 }
 
 public class EstoqueDetalheVm

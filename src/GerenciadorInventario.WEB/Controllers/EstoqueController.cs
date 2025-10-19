@@ -48,7 +48,8 @@ public class EstoqueController : Controller
         return PartialView("_Movimento", new MovimentoEstoqueVm
         {
             Movimento = new MovimentoEstoqueDto { ProdutoId = produtoId ?? 0 },
-            Produtos = produtos.ToList()
+            Produtos = produtos.ToList(),
+            LockProduct = produtoId.HasValue && produtoId.Value > 0
         });
     }
 
@@ -63,7 +64,8 @@ public class EstoqueController : Controller
         return PartialView("_Movimento", new MovimentoEstoqueVm
         {
             Movimento = new MovimentoEstoqueDto { ProdutoId = produtoId ?? 0 },
-            Produtos = produtos.ToList()
+            Produtos = produtos.ToList(),
+            LockProduct = produtoId.HasValue && produtoId.Value > 0
         });
     }
 

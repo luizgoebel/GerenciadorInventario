@@ -3,14 +3,21 @@
     <form id="movForm">
         <div class="mb-3">
             <label class="form-label">Produto</label>
-            <select name="ProdutoId" class="form-select">
+            <select name="ProdutoId" class="form-select" @(Model.LockProduct ? "disabled" : null)>
                 <option value="">Selecione...</option>
                 @foreach (var p in Model.Produtos)
                 {
-                    var selected = p.Id == Model.Movimento.ProdutoId ? "selected" : "";
-                    <option value="@p.Id" selected>@p.Nome</option>
+                    if (p.Id == Model.Movimento.ProdutoId)
+                    {
+                        <option value="@p.Id" selected>@p.Nome</option>
+                    }
+                    else
+                    {
+                        <option value="@p.Id">@p.Nome</option>
+                    }
                 }
             </select>
+            @if(Model.LockProduct){<small class="text-muted">Produto bloqueado por seleção de linha.</small>}
         </div>
         <div class="mb-3">
             <label class="form-label">Quantidade</label>
@@ -27,7 +34,7 @@
         document.getElementById('btnSalvarMov').addEventListener('click', async function(){
             const form = document.getElementById('movForm');
             const data = Object.fromEntries(new FormData(form).entries());
-            data.ProdutoId = parseInt(data.ProdutoId);
+            data.ProdutoId = parseInt(data.ProdutoId || '@Model.Movimento.ProdutoId');
             data.Quantidade = parseInt(data.Quantidade);
             const action = window.__movAction === 'entrada' ? '/Estoque/MovimentoEntrada' : '/Estoque/MovimentoSaida';
             const res = await Ui.postJson(action, data);

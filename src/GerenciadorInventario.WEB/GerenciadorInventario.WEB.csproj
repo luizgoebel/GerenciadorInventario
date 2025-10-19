@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Faturamento\" />
-    <Folder Include="Views\Recibo\" />
+    <Compile Remove="Views\Faturamento\**" />
+    <Compile Remove="Views\Recibo\**" />
+    <Content Remove="Views\Faturamento\**" />
+    <Content Remove="Views\Recibo\**" />
+    <EmbeddedResource Remove="Views\Faturamento\**" />
+    <EmbeddedResource Remove="Views\Recibo\**" />
+    <None Remove="Views\Faturamento\**" />
+    <None Remove="Views\Recibo\**" />
   </ItemGroup>
 
 </Project>
