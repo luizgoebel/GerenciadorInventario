@@ -2,6 +2,7 @@ using GerenciadorInventario.WEB.Clients.Interface;
 using GerenciadorInventario.WEB.Dtos;
 using GerenciadorInventario.WEB.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace GerenciadorInventario.WEB.Controllers;
 
@@ -17,7 +18,15 @@ public class ProdutoController : Controller
     {
         var itens = await _client.GetTodosAsync();
         if (!string.IsNullOrWhiteSpace(filtro))
-            itens = itens.Where(p => p.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase));
+        {
+            var f = filtro.Trim();
+            var fLower = f.ToLowerInvariant();
+            itens = itens.Where(p =>
+                (p.Nome?.ToLowerInvariant().Contains(fLower) ?? false) ||
+                (p.Descricao?.ToLowerInvariant().Contains(fLower) ?? false) ||
+                p.Preco.ToString("C2", new CultureInfo("pt-BR")).ToLowerInvariant().Contains(fLower)
+            );
+        }
         var total = itens.Count();
         var pageItems = itens.Skip((page - 1) * pageSize).Take(pageSize);
         var vm = new ProdutoListVm

@@ -18,7 +18,7 @@ public class EstoqueController : Controller
     public IActionResult Index() => View(new EstoqueVm());
 
     [HttpGet]
-    public async Task<IActionResult> Tabela(int? produtoId, int page = 1, int pageSize = 10)
+    public async Task<IActionResult> Tabela(string? filtro, int page = 1, int pageSize = 10)
     {
         var produtos = (await _produtoClient.GetTodosAsync()).ToList();
         var itens = new List<EstoqueListItemVm>();
@@ -27,13 +27,15 @@ public class EstoqueController : Controller
             var e = await _client.GetPorProdutoAsync(p.Id);
             if (e != null) itens.Add(new EstoqueListItemVm { ProdutoId = p.Id, ProdutoNome = p.Nome, Quantidade = e.Quantidade });
         }
-        if (produtoId.HasValue)
-            itens = itens.Where(x => x.ProdutoId == produtoId.Value).ToList();
+        if (!string.IsNullOrWhiteSpace(filtro))
+        {
+            var f = filtro.Trim().ToLowerInvariant();
+            itens = itens.Where(x => x.ProdutoNome.ToLowerInvariant().Contains(f) || x.Quantidade.ToString().Contains(f)).ToList();
+        }
         var total = itens.Count;
         var pageItems = itens.Skip((page - 1) * pageSize).Take(pageSize);
         var vm = new EstoqueVm
         {
-            ProdutoIdFiltro = produtoId,
             Dados = new PagedResult<EstoqueListItemVm> { Items = pageItems, Page = page, PageSize = pageSize, TotalItems = total }
         };
         return PartialView("_Tabela", vm);

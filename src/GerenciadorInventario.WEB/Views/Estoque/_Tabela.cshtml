@@ -1,10 +1,14 @@
 @model GerenciadorInventario.WEB.ViewModels.EstoqueVm
+<div class="d-flex align-items-center justify-content-between mb-2">
+    <h5 class="mb-0">Estoque</h5>
+    <div></div>
+</div>
 <table class="table table-hover align-middle">
     <thead>
         <tr>
             <th>Produto</th>
             <th>Quantidade</th>
-            <th class="text-end">Ações</th>
+            <th class="text-center">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -19,13 +23,13 @@
             foreach (var e in Model.Dados.Items)
             {
                 <tr>
-                    <td>@e.ProdutoNome (@e.ProdutoId)</td>
+                    <td>@e.ProdutoNome</td>
                     <td>@e.Quantidade</td>
-                    <td class="text-end">
+                    <td class="text-center">
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-secondary" data-action="view" data-id="@e.ProdutoId" data-bs-toggle="tooltip" data-bs-title="Visualizar"><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn btn-outline-success" data-action="entrada" data-id="@e.ProdutoId" data-bs-toggle="tooltip" data-bs-title="Entrada"><i class="fa-solid fa-plus"></i></button>
-                            <button class="btn btn-outline-warning" data-action="saida" data-id="@e.ProdutoId" data-bs-toggle="tooltip" data-bs-title="Saída"><i class="fa-solid fa-minus"></i></button>
+                            <button class="btn btn-outline-secondary" data-action="view" data-id="@e.ProdutoId" data-bs-toggle="tooltip" data-bs-title="Visualizar" data-bs-placement="bottom"><i class="fa-solid fa-eye"></i></button>
+                            <button class="btn btn-outline-success" data-action="entrada" data-id="@e.ProdutoId" data-bs-toggle="tooltip" data-bs-title="Entrada" data-bs-placement="bottom"><i class="fa-solid fa-plus"></i></button>
+                            <button class="btn btn-outline-warning" data-action="saida" data-id="@e.ProdutoId" data-bs-toggle="tooltip" data-bs-title="Saída" data-bs-placement="bottom"><i class="fa-solid fa-minus"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -36,14 +40,14 @@
 <nav aria-label="Paginação">
     <ul class="pagination justify-content-end">
         <li class="page-item @(Model.Dados.Page == 1 ? "disabled" : "")">
-            <a class="page-link" href="#" data-page="@(Model.Dados.Page - 1)" data-bs-toggle="tooltip" data-bs-title="Página anterior">Anterior</a>
+            <a class="page-link" href="#" data-page="@(Model.Dados.Page - 1)" data-bs-toggle="tooltip" data-bs-title="Página anterior" data-bs-placement="bottom">Anterior</a>
         </li>
         @for (var i = 1; i <= Math.Max(1, Model.Dados.TotalPages); i++)
         {
-            <li class="page-item @(Model.Dados.Page == i ? "active" : "")"><a class="page-link" href="#" data-page="@i" data-bs-toggle="tooltip" data-bs-title="Ir para página @i">@i</a></li>
+            <li class="page-item @(Model.Dados.Page == i ? "active" : "")"><a class="page-link" href="#" data-page="@i" data-bs-toggle="tooltip" data-bs-title="Ir para página @i" data-bs-placement="bottom">@i</a></li>
         }
         <li class="page-item @(Model.Dados.Page == Model.Dados.TotalPages ? "disabled" : "")">
-            <a class="page-link" href="#" data-page="@(Model.Dados.Page + 1)" data-bs-toggle="tooltip" data-bs-title="Próxima página">Próximo</a>
+            <a class="page-link" href="#" data-page="@(Model.Dados.Page + 1)" data-bs-toggle="tooltip" data-bs-title="Próxima página" data-bs-placement="bottom">Próximo</a>
         </li>
     </ul>
 </nav>

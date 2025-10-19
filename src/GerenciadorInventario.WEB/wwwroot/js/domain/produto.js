@@ -1,6 +1,15 @@
 window.ProdutoPage = (function(){
   const containerId = 'produtoTableContainer';
 
+  let debounce;
+  function scheduleReload(){
+    clearTimeout(debounce);
+    const txt = document.getElementById('txtFiltroProduto');
+    const v = (txt.value||'').trim();
+    if(v.length === 0){ debounce = setTimeout(()=> reloadTable(1), 200); return; }
+    if(v.length >= 3){ debounce = setTimeout(()=> reloadTable(1), 300); }
+  }
+
   async function reloadTable(page){
     const filtro = document.getElementById('txtFiltroProduto').value.trim();
     const url = `/Produto/Tabela?filtro=${encodeURIComponent(filtro)}${page?`&page=${page}`:''}`;
@@ -30,6 +39,7 @@ window.ProdutoPage = (function(){
     document.getElementById('btnAddProduto').addEventListener('click', () => Ui.openModalFromUrl('/Produto/Criar', 'Novo Produto'));
     document.getElementById('btnFiltrarProduto').addEventListener('click', () => reloadTable());
     const txt = document.getElementById('txtFiltroProduto');
+    txt.addEventListener('input', scheduleReload);
     txt.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); reloadTable(); }});
     reloadTable();
   }

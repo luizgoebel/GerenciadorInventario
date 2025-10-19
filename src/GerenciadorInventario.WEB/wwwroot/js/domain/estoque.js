@@ -1,10 +1,18 @@
 window.EstoquePage = (function(){
   const containerId = 'estoqueTableContainer';
 
+  let debounce;
+  function scheduleReload(){
+    clearTimeout(debounce);
+    const txt = document.getElementById('txtFiltroEstoque');
+    const v = (txt.value||'').trim();
+    if(v.length === 0){ debounce = setTimeout(()=> reloadTable(1), 200); return; }
+    if(v.length >= 3){ debounce = setTimeout(()=> reloadTable(1), 300); }
+  }
+
   async function reloadTable(page){
     const filtro = document.getElementById('txtFiltroEstoque').value.trim();
-    const produtoId = filtro ? parseInt(filtro) : '';
-    const url = `/Estoque/Tabela?${produtoId?`produtoId=${produtoId}&`:''}${page?`page=${page}`:''}`;
+    const url = `/Estoque/Tabela?filtro=${encodeURIComponent(filtro)}${page?`&page=${page}`:''}`;
     await Ui.loadTable({ url, containerId });
     wireRowActions();
   }
@@ -23,6 +31,7 @@ window.EstoquePage = (function(){
     document.getElementById('btnMovSaida').addEventListener('click', () => { window.__movAction='saida'; Ui.openModalFromUrl('/Estoque/MovimentoSaida', 'Saída de Estoque'); });
     document.getElementById('btnFiltrarEstoque').addEventListener('click', () => reloadTable());
     const txt = document.getElementById('txtFiltroEstoque');
+    txt.addEventListener('input', scheduleReload);
     txt.addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); reloadTable(); }});
     reloadTable();
   }
