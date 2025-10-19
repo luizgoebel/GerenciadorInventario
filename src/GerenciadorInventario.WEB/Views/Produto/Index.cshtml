@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Produtos";
 }
-<div class="container-fluid">
+<div class="container-fluid d-flex flex-column" style="min-height: calc(100vh - 72px);">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <div>
             <button id="btnAddProduto" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Adicionar novo produto">
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div id="produtoTableContainer"></div>
+    <div id="produtoTableContainer" class="flex-grow-1 d-flex flex-column"></div>
 </div>
 
 @section Scripts {

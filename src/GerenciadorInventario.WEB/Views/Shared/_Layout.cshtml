@@ -9,15 +9,19 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GerenciadorInventario.WEB.styles.css" asp-append-version="true" />
     <style>
+        html, body { height: 100%; }
         body { overflow-x: hidden; }
         .sidebar { width: 260px; transition: margin-left .25s ease-in-out; }
         .sidebar .nav-link { color: #fff; }
         .sidebar .nav-link.active { background-color: rgba(255,255,255,.15); }
         .sidebar-collapsed .sidebar { margin-left: -260px; }
-        .content { transition: margin-left .25s ease-in-out; margin-left: 260px; }
+        .content { transition: margin-left .25s ease-in-out; margin-left: 260px; min-height: 100vh; }
         .sidebar-collapsed .content { margin-left: 0; }
-        .sidebar { position: fixed; top: 0; bottom: 0; left: 0; background-color: #0d6efd; padding-top: 56px; overflow-y:auto; }
+        .sidebar { position: fixed; top: 0; bottom: 0; left: 0; background-color: #000; padding-top: 56px; overflow-y:auto; }
         .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1030; }
+        main.container-fluid { padding-top: 72px; display: flex; flex-direction: column; min-height: calc(100vh - 72px); }
+        /* Make table containers flex to push pagination to bottom */
+        #produtoTableContainer, #estoqueTableContainer, #pedidoTableContainer, #faturamentoTableContainer, #reciboTableContainer { display: flex; flex-direction: column; flex: 1 1 auto; }
         @@media (max-width: 991.98px) {
             .content { margin-left: 0; }
             .sidebar { margin-left: -260px; }
@@ -28,18 +32,19 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary topbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark topbar">
         <div class="container-fluid">
             <button id="btnSidebarToggle" class="btn btn-outline-light me-2" type="button" aria-label="Alternar menu" data-bs-toggle="tooltip" data-bs-title="Exibir/ocultar menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Inventário</a>
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index" title="Home" aria-label="Home">
+                <i class="fa-solid fa-user"></i>
+            </a>
         </div>
     </nav>
 
     <div class="sidebar text-white">
         <div class="p-3">
-            <div class="fw-bold text-uppercase small mb-2">Navegação</div>
             <nav class="nav flex-column gap-1">
                 <a class="nav-link" asp-controller="Produto" asp-action="Index"><i class="fa-solid fa-box me-2"></i>Produtos</a>
                 <a class="nav-link" asp-controller="Estoque" asp-action="Index"><i class="fa-solid fa-warehouse me-2"></i>Estoque</a>
@@ -50,14 +55,9 @@
     </div>
 
     <div class="content">
-        <main class="container-fluid" style="padding-top: 72px;">
+        <main class="container-fluid">
             @RenderBody()
         </main>
-        <footer class="border-top footer text-muted mt-3">
-            <div class="container">
-                &copy; @DateTime.Now.Year - Gerenciador de Inventário
-            </div>
-        </footer>
     </div>
 
     <div id="modalHost"></div>
@@ -70,8 +70,6 @@
     <script src="~/js/ui.js" asp-append-version="true"></script>
     <script>
         (function(){
-            // Configure locale here if needed
-            // I18n.setLocale('pt-BR');
             const root = document.body;
             const btn = document.getElementById('btnSidebarToggle');
             btn?.addEventListener('click', () => {
